@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, library_private_types_in_public_api
+// ignore_for_file: must_be_immutable, library_private_types_in_public_api, prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -40,29 +40,179 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+class ShopPage extends StatelessWidget {
+  const ShopPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // create a shop page where you can buy stuff. used card design and a listview
+    return Scaffold(
+      
+        body: ListView(padding: const EdgeInsets.all(8), children: [
+      ShopItem(
+        title: "Tomato Seeds",
+        description: "Plant them in soil to grow your own tomato plant. \nOne plant / seed pack.",
+      ),
+      ShopItem(
+        title: "Premium Soil Pack",
+        description: "Provides the most amount of nutrition for the allowing the fastest development of your plant.",
+      ),
+      ShopItem(
+        title: "Standard Soil Pack",
+        description: "Provides sufficient nutrition for your plant. Replace when the soil has been exhausted.",
+      ),
+    ]));
+  }
+}
+
+class ShopItem extends StatelessWidget {
+  ShopItem({
+    super.key,
+    this.title = "Soil pack",
+    this.description = "A pack of soil for your plant",
+    this.assetUrl = "https://placekitten.com/200/300",
+  });
+
+  String title;
+  String description;
+  String assetUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // image from placekitten
+          Center(
+              child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            decoration: BoxDecoration(
+              // make the image have rouneded corners
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                fit: BoxFit.fitWidth,
+                image: NetworkImage(assetUrl),
+              ),
+            ),
+          )),
+          ListTile(
+            leading: Icon(Icons.shopping_bag),
+            title: Text(
+              title,
+              textAlign: TextAlign.start,
+            ),
+            subtitle: Text(description),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  child: const Text('Learn More'),
+                  onPressed: () {/* ... */},
+                ),
+                const SizedBox(width: 8),
+                TextButton(
+                  child: const Text('Buy'),
+                  onPressed: () {/* ... */},
+                  // make it more visible
+                  //  make it filled
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // flutter state called _HomeState
 class _HomeState extends State<Home> {
   bool isLoadingWater = false;
+
+  var navbarSelectedIndex = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: NavigationBar(
+        destinations: [
+          const NavigationDestination(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          const NavigationDestination(
+            // icon: Icon(Icons.settings),
+            label: 'Shop',
+            // shop icon
+            icon: Icon(Icons.shopping_bag),
+          ),
+          const NavigationDestination(
+            // icon: Icon(Icons.person),
+            label: 'Forum',
+            // forum icon
+            icon: Icon(Icons.forum),
+          ),
+          const NavigationDestination(
+            // icon: Icon(Icons.person),
+            label: 'Guides',
+            // guides icon
+            icon: Icon(Icons.book),
+          ),
+        ],
+        selectedIndex: navbarSelectedIndex,
+        onDestinationSelected: (index) => setState(() {
+          navbarSelectedIndex = index;
+        }),
+      ),
       appBar: AppBar(
-        title: const Column(
+        title: navbarSelectedIndex == 0
+            ? Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Mark's GreenBox",
+            const Text(
+              "Jeff The Tomato",
               style: TextStyle(color: Colors.white, fontSize: 16.0),
             ),
-            Text(
-              "Growing Tomatoes",
+            Row(
+              children: [
+                const Text(
+                  "GreenBox Online",
               style: TextStyle(color: Colors.white, fontSize: 14.0),
+                ),
+                // a green cirlce
+                Padding(
+                  padding: const EdgeInsets.only(top: 3.7),
+                  child: Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 5.0),
+                      width: 10.0,
+                      height: 10.0,
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
-        ),
+              )
+            : Text("Shop"),
       ),
-      body: SingleChildScrollView(
+      body: [
+        SingleChildScrollView(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
@@ -71,12 +221,12 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Chip(
-                  labelPadding: EdgeInsets.all(2.0),
-                  avatar: CircleAvatar(
+                    labelPadding: const EdgeInsets.all(2.0),
+                    avatar: const CircleAvatar(
                     // backgroundColor: Colors.white70,
                     child: Text("1"),
                   ),
-                  label: Text(
+                    label: const Text(
                     " Warning",
                     style: TextStyle(
                       color: Colors.white,
@@ -85,7 +235,7 @@ class _HomeState extends State<Home> {
                   // backgroundColor: Colors.red,
                   elevation: 6.0,
                   shadowColor: Colors.grey[60],
-                  padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                 ),
               ),
               Text(
@@ -130,7 +280,7 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 200,
                 child: LineChartSample2(
-                  gradient: [Colors.orange, Colors.red],
+                    gradient: const [Colors.orange, Colors.red],
                   // generate spots in a way that the first number increases and the second is a random number
                   spots: const [
                     FlSpot(0, 4.8),
@@ -151,7 +301,7 @@ class _HomeState extends State<Home> {
               // add a button with the text "learn more" with a filled style
 
               // add a listtile with a leading icon of a little ? and a title of "What does this mean?"
-              ListTile(
+                const ListTile(
                 leading: Icon(Icons.help_outline),
                 title: Text(
                     'You should by new soil and replace the old soil. If not your plant will die in a terrible way. You can replace the soil by purchaising new soil pack from us.'),
@@ -159,12 +309,12 @@ class _HomeState extends State<Home> {
               ElevatedButton(
                 onPressed: () {
                   // Put your action here
-                },
-                child: Text('Head to shop'),
+                  },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.red, // This is the background color
                   onPrimary: Colors.white, // This is the color of the text
                 ),
+                  child: const Text('Head to shop'),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 32.0),
@@ -282,12 +432,10 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+        ),
+        const ShopPage()
+      ][navbarSelectedIndex],
+     
     );
   }
 }
