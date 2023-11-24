@@ -1,4 +1,12 @@
+// ignore_for_file: must_be_immutable, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
+
+import 'package:slide_action/slide_action.dart';
+// import cuperino activity indicator
+import 'package:flutter/cupertino.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -13,113 +21,382 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
+
+        // make it dark mode by default
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const Home(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+// flutter statful widget called Home
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+// flutter state called _HomeState
+class _HomeState extends State<Home> {
+  bool isLoadingWater = false;
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
+        title: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Mark's GreenBox",
+              style: TextStyle(color: Colors.white, fontSize: 16.0),
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+              "Growing Tomatoes",
+              style: TextStyle(color: Colors.white, fontSize: 14.0),
+            )
           ],
         ),
       ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Humidity over time',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              SizedBox(
+                height: 200,
+                child: LineChartSample2(
+                  // generate spots in a way that the first number increases and the second is a random number
+                  spots: List.generate(
+                    12,
+                    (index) {
+                      var rng = Random();
+                      double randomNumber = 3 + rng.nextDouble() * (5 - 3);
+
+                      return FlSpot(
+                        index.toDouble(),
+                        // completly random number between 0 and 5 as double
+                        randomNumber,
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                child: Divider(),
+              ),
+              Text(
+                'Soil quality',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              SizedBox(
+                height: 200,
+                child: LineChartSample2(
+                  gradient: [Colors.orange, Colors.red],
+                  // generate spots in a way that the first number increases and the second is a random number
+                  spots: const [
+                    FlSpot(0, 4.8),
+                    FlSpot(1, 4.7),
+                    FlSpot(2, 4.5),
+                    FlSpot(3, 4.1),
+                    FlSpot(4, 3.8),
+                    FlSpot(5, 3.8),
+                    FlSpot(6, 3.2),
+                    FlSpot(7, 2.3),
+                    FlSpot(8, 2.3),
+                    FlSpot(9, 2.3),
+                    FlSpot(10, 2.1),
+                    FlSpot(11, 2.0),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                child: Divider(),
+              ),
+              Text(
+                'Seed growth',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              SizedBox(
+                height: 200,
+                child: LineChartSample2(
+                  // generate spots in a way that the first number increases and the second is a random number
+                  spots: List.generate(
+                    12,
+                    (index) {
+                      var rng = Random();
+                      double randomNumber = 3 + rng.nextDouble() * (5 - 3);
+
+                      return FlSpot(
+                        index.toDouble(),
+                        // completly random number between 0 and 5 as double
+                        randomNumber,
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                child: Divider(),
+              ),
+              Text(
+                'Temp over time',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              SizedBox(
+                height: 200,
+                child: LineChartSample2(
+                  spots: const [
+                    FlSpot(0, 5),
+                    FlSpot(2.6, 2),
+                    FlSpot(4.9, 5),
+                    FlSpot(6.8, 3.1),
+                    FlSpot(8, 4),
+                    FlSpot(9.5, 3),
+                    FlSpot(11, 4),
+                  ],
+                ),
+              ),
+              Text(
+                'Slide to water',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: SlideAction(
+                  stretchThumb: true,
+                  trackBuilder: (context, state) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Swipe to water!",
+                        ),
+                      ),
+                    );
+                  },
+                  thumbBuilder: (context, state) {
+                    return Container(
+                      margin: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        // use theme data color
+                        // color: Colors,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(
+                        child: isLoadingWater
+                            ? const CupertinoActivityIndicator(
+                                color: Colors.white,
+                              )
+                            : const Icon(
+                                Icons.chevron_right,
+                                color: Colors.white,
+                              ),
+                      ),
+                    );
+                  },
+                  action: () async {
+                    debugPrint("Hello World");
+                    setState(() {
+                      isLoadingWater = true;
+                    });
+                    await Future.delayed(
+                      const Duration(seconds: 2),
+                      () => {
+                        setState(() {
+                          isLoadingWater = false;
+                        })
+                      },
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+    );
+  }
+}
+
+class LineChartSample2 extends StatefulWidget {
+  // const LineChartSample2({super.key});
+  // LineChartSample2({Key? key, required this.spots}) : super(key: key);
+  LineChartSample2({Key? key, required this.spots, this.gradient = const [Colors.lightGreen, Colors.green]}) : super(key: key);
+  List<Color> gradient;
+  List<FlSpot> spots;
+  @override
+  State<LineChartSample2> createState() => _LineChartSample2State();
+}
+
+class _LineChartSample2State extends State<LineChartSample2> {
+  bool showAvg = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AspectRatio(
+          aspectRatio: 1.70,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              right: 18,
+              left: 12,
+              top: 24,
+              bottom: 12,
+            ),
+            child: LineChart(
+              mainData(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    );
+    Widget text;
+    switch (value.toInt()) {
+      case 2:
+        text = const Text('10:00', style: style);
+        break;
+      case 5:
+        text = const Text('10:30', style: style);
+        break;
+      case 8:
+        text = const Text('11:00', style: style);
+        break;
+      default:
+        text = const Text('', style: style);
+        break;
+    }
+    text = const Text('', style: style);
+
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: text,
+    );
+  }
+
+  Widget leftTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 15,
+    );
+    String text;
+    if (value.toInt() % 2 == 0) {
+      text = "${value.toInt() * 10}%";
+    } else {
+      text = "";
+    }
+
+    return Text(text, style: style, textAlign: TextAlign.left);
+  }
+
+  LineChartData mainData() {
+    return LineChartData(
+      gridData: FlGridData(
+        show: true,
+        drawVerticalLine: true,
+        horizontalInterval: 1,
+        verticalInterval: 1,
+        getDrawingHorizontalLine: (value) {
+          return FlLine(
+            color: Colors.grey.shade800,
+            strokeWidth: 1,
+          );
+        },
+        getDrawingVerticalLine: (value) {
+          return FlLine(
+            color: Colors.grey.shade800,
+            strokeWidth: 1,
+          );
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            interval: 1,
+            getTitlesWidget: bottomTitleWidgets,
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            interval: 1,
+            getTitlesWidget: leftTitleWidgets,
+            reservedSize: 42,
+          ),
+        ),
+      ),
+      borderData: FlBorderData(
+        show: true,
+        border: Border.all(color: const Color(0xff37434d)),
+      ),
+      minX: 0,
+      maxX: 11,
+      minY: 0,
+      maxY: 6,
+      lineBarsData: [
+        LineChartBarData(
+          spots: widget.spots,
+          isCurved: true,
+          gradient: LinearGradient(
+            colors: widget.gradient,
+          ),
+          barWidth: 5,
+          isStrokeCapRound: true,
+          dotData: const FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: widget.gradient.map((color) => color.withOpacity(0.3)).toList(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
