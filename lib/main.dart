@@ -68,9 +68,33 @@ class _HomeState extends State<Home> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Chip(
+                  labelPadding: EdgeInsets.all(2.0),
+                  avatar: CircleAvatar(
+                    // backgroundColor: Colors.white70,
+                    child: Text("1"),
+                  ),
+                  label: Text(
+                    " Warning",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  // backgroundColor: Colors.red,
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[60],
+                  padding: EdgeInsets.all(10.0),
+                ),
+              ),
               Text(
                 'Humidity over time',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green),
+              ),
+              Text(
+                'OK!',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
               ),
               SizedBox(
                 height: 200,
@@ -97,7 +121,11 @@ class _HomeState extends State<Home> {
               ),
               Text(
                 'Soil quality',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.red),
+              ),
+              Text(
+                'ISSUES!',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red),
               ),
               SizedBox(
                 height: 200,
@@ -118,6 +146,24 @@ class _HomeState extends State<Home> {
                     FlSpot(10, 2.1),
                     FlSpot(11, 2.0),
                   ],
+                ),
+              ),
+              // add a button with the text "learn more" with a filled style
+
+              // add a listtile with a leading icon of a little ? and a title of "What does this mean?"
+              ListTile(
+                leading: Icon(Icons.help_outline),
+                title: Text(
+                    'You should by new soil and replace the old soil. If not your plant will die in a terrible way. You can replace the soil by purchaising new soil pack from us.'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Put your action here
+                },
+                child: Text('Head to shop'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red, // This is the background color
+                  onPrimary: Colors.white, // This is the color of the text
                 ),
               ),
               const Padding(
