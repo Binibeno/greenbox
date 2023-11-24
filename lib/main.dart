@@ -52,13 +52,18 @@ class ShopPage extends StatelessWidget {
       ShopItem(
         title: "Tomato Seeds",
         description: "Plant them in soil to grow your own tomato plant. \nOne plant / seed pack.",
+        assetUrl: "assets/tomato.png",
       ),
       ShopItem(
         title: "Premium Soil Pack",
+        assetUrl: "assets/premium.png",
+
         description: "Provides the most amount of nutrition for the allowing the fastest development of your plant.",
       ),
       ShopItem(
         title: "Standard Soil Pack",
+        assetUrl: "assets/soil.png",
+
         description: "Provides sufficient nutrition for your plant. Replace when the soil has been exhausted.",
       ),
     ]));
@@ -94,7 +99,7 @@ class ShopItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                 fit: BoxFit.fitWidth,
-                image: NetworkImage(assetUrl),
+                image: AssetImage(assetUrl),
               ),
             ),
           )),
