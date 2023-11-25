@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -47,7 +48,6 @@ class ShopPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // create a shop page where you can buy stuff. used card design and a listview
     return Scaffold(
-      
         body: ListView(padding: const EdgeInsets.all(8), children: [
       ShopItem(
         title: "Tomato Seeds",
@@ -57,13 +57,11 @@ class ShopPage extends StatelessWidget {
       ShopItem(
         title: "Premium Soil Pack",
         assetUrl: "assets/premium.png",
-
         description: "Provides the most amount of nutrition for the allowing the fastest development of your plant.",
       ),
       ShopItem(
         title: "Standard Soil Pack",
         assetUrl: "assets/soil.png",
-
         description: "Provides sufficient nutrition for your plant. Replace when the soil has been exhausted.",
       ),
     ]));
@@ -86,7 +84,6 @@ class ShopItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
-        
         mainAxisSize: MainAxisSize.min,
         children: [
           // image from placekitten
@@ -177,270 +174,337 @@ class _HomeState extends State<Home> {
         selectedIndex: navbarSelectedIndex,
         onDestinationSelected: (index) => setState(() {
           navbarSelectedIndex = index;
+          if (navbarSelectedIndex > 1) {
+            navbarSelectedIndex = 1;
+          }
         }),
       ),
       appBar: AppBar(
         title: navbarSelectedIndex == 0
             ? Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Jeff The Tomato",
-              style: TextStyle(color: Colors.white, fontSize: 16.0),
-            ),
-            Row(
-              children: [
-                const Text(
-                  "GreenBox Online",
-              style: TextStyle(color: Colors.white, fontSize: 14.0),
-                ),
-                // a green cirlce
-                Padding(
-                  padding: const EdgeInsets.only(top: 3.7),
-                  child: Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 5.0),
-                      width: 10.0,
-                      height: 10.0,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Jeff The Tomato",
+                    style: TextStyle(color: Colors.white, fontSize: 16.0),
                   ),
-                ),
-              ],
-            )
-          ],
+                  Row(
+                    children: [
+                      const Text(
+                        "GreenBox Online",
+                        style: TextStyle(color: Colors.white, fontSize: 14.0),
+                      ),
+                      // a green cirlce
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3.7),
+                        child: Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 5.0),
+                            width: 10.0,
+                            height: 10.0,
+                            decoration: const BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               )
             : Text("Shop"),
       ),
       body: [
         SingleChildScrollView(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Chip(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Chip(
                     labelPadding: const EdgeInsets.all(2.0),
                     avatar: const CircleAvatar(
-                    // backgroundColor: Colors.white70,
-                    child: Text("1"),
-                  ),
+                      // backgroundColor: Colors.white70,
+                      child: Text("1"),
+                    ),
                     label: const Text(
-                    " Warning",
-                    style: TextStyle(
-                      color: Colors.white,
+                      " Action Needed",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    // backgroundColor: Colors.red,
+                    elevation: 6.0,
+                    shadowColor: Colors.grey[60],
+                    padding: const EdgeInsets.all(10.0),
+                  ),
+                ),
+                //  sizedbox
+                const SizedBox(
+                  height: 10,
+                ),
+                
+                Text(
+                  'Soil quality',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.red),
+                ),
+                Text(
+                  'ISSUES!',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red),
+                ),
+                SizedBox(
+                  height: 200,
+                  child: LineChartSample2(
+                    gradient: const [Colors.orange, Colors.red],
+                    // generate spots in a way that the first number increases and the second is a random number
+                    spots: const [
+                      FlSpot(0, 4.8),
+                      FlSpot(1, 4.7),
+                      FlSpot(2, 4.5),
+                      FlSpot(3, 4.1),
+                      FlSpot(4, 3.8),
+                      FlSpot(5, 3.8),
+                      FlSpot(6, 3.2),
+                      FlSpot(7, 2.3),
+                      FlSpot(8, 2.3),
+                      FlSpot(9, 2.3),
+                      FlSpot(10, 2.1),
+                      FlSpot(11, 2.0),
+                    ],
+                  ),
+                ),
+                // add a button with the text "learn more" with a filled style
+
+                // add a listtile with a leading icon of a little ? and a title of "What does this mean?"
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Card(
+                    child: const ListTile(
+                      leading: Icon(Icons.help_outline),
+                      title: Text(
+                          'You should by new soil and replace the old soil. If not your plant will die in a terrible way. You can replace the soil by purchaising new soil pack from us.'),
                     ),
                   ),
-                  // backgroundColor: Colors.red,
-                  elevation: 6.0,
-                  shadowColor: Colors.grey[60],
-                    padding: const EdgeInsets.all(10.0),
                 ),
-              ),
-              Text(
-                'Humidity over time',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green),
-              ),
-              Text(
-                'OK!',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
-              ),
-              SizedBox(
-                height: 200,
-                child: LineChartSample2(
-                  // generate spots in a way that the first number increases and the second is a random number
-                  spots: List.generate(
-                    12,
-                    (index) {
-                      var rng = Random();
-                      double randomNumber = 3 + rng.nextDouble() * (5 - 3);
-
-                      return FlSpot(
-                        index.toDouble(),
-                        // completly random number between 0 and 5 as double
-                        randomNumber,
-                      );
-                    },
-                  ),
+                //sizedbox
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32.0),
-                child: Divider(),
-              ),
-              Text(
-                'Soil quality',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.red),
-              ),
-              Text(
-                'ISSUES!',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red),
-              ),
-              SizedBox(
-                height: 200,
-                child: LineChartSample2(
-                    gradient: const [Colors.orange, Colors.red],
-                  // generate spots in a way that the first number increases and the second is a random number
-                  spots: const [
-                    FlSpot(0, 4.8),
-                    FlSpot(1, 4.7),
-                    FlSpot(2, 4.5),
-                    FlSpot(3, 4.1),
-                    FlSpot(4, 3.8),
-                    FlSpot(5, 3.8),
-                    FlSpot(6, 3.2),
-                    FlSpot(7, 2.3),
-                    FlSpot(8, 2.3),
-                    FlSpot(9, 2.3),
-                    FlSpot(10, 2.1),
-                    FlSpot(11, 2.0),
-                  ],
-                ),
-              ),
-              // add a button with the text "learn more" with a filled style
-
-              // add a listtile with a leading icon of a little ? and a title of "What does this mean?"
-                const ListTile(
-                leading: Icon(Icons.help_outline),
-                title: Text(
-                    'You should by new soil and replace the old soil. If not your plant will die in a terrible way. You can replace the soil by purchaising new soil pack from us.'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Put your action here
-                  },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red, // This is the background color
-                  onPrimary: Colors.white, // This is the color of the text
-                ),
-                  child: const Text('Head to shop'),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32.0),
-                child: Divider(),
-              ),
-              Text(
-                'Seed growth',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(
-                height: 200,
-                child: LineChartSample2(
-                  // generate spots in a way that the first number increases and the second is a random number
-                  spots: List.generate(
-                    12,
-                    (index) {
-                      var rng = Random();
-                      double randomNumber = 3 + rng.nextDouble() * (5 - 3);
-
-                      return FlSpot(
-                        index.toDouble(),
-                        // completly random number between 0 and 5 as double
-                        randomNumber,
-                      );
-                    },
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32.0),
-                child: Divider(),
-              ),
-              Text(
-                'Temp over time',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(
-                height: 200,
-                child: LineChartSample2(
-                  spots: const [
-                    FlSpot(0, 5),
-                    FlSpot(2.6, 2),
-                    FlSpot(4.9, 5),
-                    FlSpot(6.8, 3.1),
-                    FlSpot(8, 4),
-                    FlSpot(9.5, 3),
-                    FlSpot(11, 4),
-                  ],
-                ),
-              ),
-              Text(
-                'Slide to water',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: SlideAction(
-                  stretchThumb: true,
-                  trackBuilder: (context, state) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 8,
-                          ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Swipe to water!",
-                        ),
-                      ),
-                    );
-                  },
-                  thumbBuilder: (context, state) {
-                    return Container(
-                      margin: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        // use theme data color
-                        // color: Colors,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Center(
-                        child: isLoadingWater
-                            ? const CupertinoActivityIndicator(
-                                color: Colors.white,
-                              )
-                            : const Icon(
-                                Icons.chevron_right,
-                                color: Colors.white,
-                              ),
-                      ),
-                    );
-                  },
-                  action: () async {
-                    debugPrint("Hello World");
-                    setState(() {
-                      isLoadingWater = true;
-                    });
-                    await Future.delayed(
-                      const Duration(seconds: 2),
-                      () => {
-                        setState(() {
-                          isLoadingWater = false;
-                        })
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Put your action here
                       },
-                    );
-                  },
+                      child: const Text('Learn more in our guides'),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          navbarSelectedIndex = 1;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red, // This is the background color
+                        onPrimary: Colors.white, // This is the color of the text
+                      ),
+                      child: const Text('Head to shop'),
+                    ),
+                  ],
                 ),
-              )
-            ],
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+                  child: Divider(),
+                ),
+                
+                Text(
+                  'Soil Moisture',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green),
+                ),
+                Text(
+                  'NORMAL',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
+                ),
+                SizedBox(
+                  height: 200,
+                  child: LineChartSample2(
+                    // generate spots in a way that the first number increases and the second is a random number
+                    showLabels: true,
+                    spots: const [
+                      FlSpot(0, 4.8),
+                      FlSpot(1, 4.7),
+                      FlSpot(2, 4.5),
+                      FlSpot(3, 4.1),
+                      FlSpot(4, 4.05),
+                      FlSpot(5, 4.0),
+                      FlSpot(6, 3.8),
+                      FlSpot(7, 3.6),
+                      FlSpot(8, 3.4),
+                      FlSpot(9, 3.0),
+                      FlSpot(10, 2.7),
+                      FlSpot(11, 2.0),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32.0, right: 32.0, bottom: 32.0),
+                  child: SlideAction(
+                    stretchThumb: true,
+                    trackBuilder: (context, state) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Color.fromRGBO(38, 35, 41, 1),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Swipe to water your crop!",
+                          ),
+                        ),
+                      );
+                    },
+                    thumbBuilder: (context, state) {
+                      return Container(
+                        margin: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          // use theme data color
+                          // color: Colors,
+                          color: Color.fromRGBO(75, 67, 88, 1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Center(
+                          child: isLoadingWater
+                              ? const CupertinoActivityIndicator(
+                                  color: Colors.white,
+                                )
+                              : const Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.white,
+                                ),
+                        ),
+                      );
+                    },
+                    action: () async {
+                      debugPrint("Hello World");
+                      setState(() {
+                        isLoadingWater = true;
+                      });
+                      await Future.delayed(
+                        const Duration(seconds: 2),
+                        () => {
+                          setState(() {
+                            isLoadingWater = false;
+                          })
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+                  child: Divider(),
+                ),
+                Text(
+                  'Seed growth',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green),
+                ),
+                Text(
+                  'HEALTHY',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
+                ),
+                SizedBox(
+                  height: 200,
+                  child: LineChartSample2(
+                      // generate spots in a way that the first number increases and the second is a random number
+                      spots: [
+                        FlSpot(0, 2.1),
+                        FlSpot(2.6, 3),
+                        FlSpot(4.9, 3.2),
+                        FlSpot(6.8, 3.4),
+                        FlSpot(8, 3.7),
+                        FlSpot(9.5, 3.8),
+                        FlSpot(11, 3.8),
+                      ]),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Divider(),
+                ),
+                Text(
+                  'Box Humidity',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green),
+                ),
+                Text(
+                  'NORMAL',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
+                ),
+                SizedBox(
+                  height: 200,
+                  child: LineChartSample2(
+                    // generate spots in a way that the first number increases and the second is a random number
+                    showLabels: true,
+                    spots: List.generate(
+                      12,
+                      (index) {
+                        var rng = Random();
+                        double randomNumber = 3 + rng.nextDouble() * (5 - 3);
+
+                        return FlSpot(
+                          index.toDouble(),
+                          // completly random number between 0 and 5 as double
+                          randomNumber,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Divider(),
+                ),
+                Text(
+                  'Box Temperature',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                SizedBox(
+                  height: 200,
+                  child: LineChartSample2(
+                    labelPrefix: "°C",
+                    min: 0,
+                    textGenerator: (value) {
+                      return ["18°C", "20°C", "22°C", "24°C", "26°C", "28°C"][value.toInt()];
+                    },
+                    max: 5,
+                    spots: const [
+                      FlSpot(0, 2.1),
+                      FlSpot(2.6, 3),
+                      FlSpot(4.9, 3.2),
+                      FlSpot(6.8, 2.4),
+                      FlSpot(8, 2.2),
+                      FlSpot(9.5, 2.3),
+                      FlSpot(11, 2.1),
+                    ],
+                  ),
+                ),
+           
+              ],
+            ),
           ),
-        ),
         ),
         const ShopPage()
       ][navbarSelectedIndex],
-     
     );
   }
 }
@@ -448,9 +512,24 @@ class _HomeState extends State<Home> {
 class LineChartSample2 extends StatefulWidget {
   // const LineChartSample2({super.key});
   // LineChartSample2({Key? key, required this.spots}) : super(key: key);
-  LineChartSample2({Key? key, required this.spots, this.gradient = const [Colors.lightGreen, Colors.green]}) : super(key: key);
+  LineChartSample2(
+      {Key? key,
+      this.showLabels = true,
+      required this.spots,
+      this.labelPrefix = "%",
+      this.min = 0,
+      this.max = 6,
+      this.textGenerator,
+      this.gradient = const [Colors.lightGreen, Colors.green]})
+      : super(key: key);
   List<Color> gradient;
+  Function(double)? textGenerator;
+  double min = 0;
+  double max = 6;
+
+  String labelPrefix = "%";
   List<FlSpot> spots;
+  bool showLabels = true;
   @override
   State<LineChartSample2> createState() => _LineChartSample2State();
 }
@@ -514,10 +593,15 @@ class _LineChartSample2State extends State<LineChartSample2> {
       fontSize: 15,
     );
     String text;
-    if (value.toInt() % 2 == 0) {
-      text = "${value.toInt() * 10}%";
+
+    if (widget.textGenerator != null) {
+      text = widget.textGenerator!(value);
     } else {
-      text = "";
+      if (value.toInt() % 2 == 0) {
+        text = "${value.toInt() * 10}${widget.labelPrefix}";
+      } else {
+        text = "";
+      }
     }
 
     return Text(text, style: style, textAlign: TextAlign.left);
@@ -544,7 +628,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
         },
       ),
       titlesData: FlTitlesData(
-        show: true,
+        show: widget.showLabels,
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
@@ -574,8 +658,8 @@ class _LineChartSample2State extends State<LineChartSample2> {
       ),
       minX: 0,
       maxX: 11,
-      minY: 0,
-      maxY: 6,
+      minY: widget.min,
+      maxY: widget.max,
       lineBarsData: [
         LineChartBarData(
           spots: widget.spots,
