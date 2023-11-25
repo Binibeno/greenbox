@@ -337,6 +337,7 @@ class _HomeState extends State<Home> {
                   title: "Soil Moisture",
                   status: "NORMAL",
                   isOK: true,
+                  labelPrefix: "%",
                   spots: const [
                     FlSpot(0, 4.8),
                     FlSpot(1, 4.7),
