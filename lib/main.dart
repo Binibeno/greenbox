@@ -143,8 +143,6 @@ class ShopItem extends StatelessWidget {
   }
 }
 
-
-
 class LiveSoil extends StatefulWidget {
   const LiveSoil({super.key});
 
@@ -170,7 +168,7 @@ class _LiveSoilState extends State<LiveSoil> {
     print("connecting");
 
     channel.stream.listen((message) {
-      channel.sink.add('received!');
+      // channel.sink.add('received!');
       // print(message);
 
       addDatapoint(message);
@@ -782,7 +780,6 @@ class _LineChartSample2State extends State<LineChartSample2> {
       ),
       borderData: FlBorderData(
         show: true,
-
         border: widget.showLabels
             ? Border.all(color: const Color(0xff37434d))
             : Border.fromBorderSide(BorderSide(color: Color(0xff37434d), style: BorderStyle.none)),
