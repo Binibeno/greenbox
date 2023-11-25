@@ -247,38 +247,28 @@ class _HomeState extends State<Home> {
                 const SizedBox(
                   height: 10,
                 ),
-                
-                Text(
-                  'Soil quality',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.red),
-                ),
-                Text(
-                  'ISSUES!',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.red),
-                ),
-                SizedBox(
-                  height: 200,
-                  child: LineChartSample2(
-                    gradient: const [Colors.orange, Colors.red],
-                    // generate spots in a way that the first number increases and the second is a random number
-                    spots: const [
-                      FlSpot(0, 4.8),
-                      FlSpot(1, 4.7),
-                      FlSpot(2, 4.5),
-                      FlSpot(3, 4.1),
-                      FlSpot(4, 3.8),
-                      FlSpot(5, 3.8),
-                      FlSpot(6, 3.2),
-                      FlSpot(7, 2.3),
-                      FlSpot(8, 2.3),
-                      FlSpot(9, 2.3),
-                      FlSpot(10, 2.1),
-                      FlSpot(11, 2.0),
-                    ],
-                  ),
-                ),
-                // add a button with the text "learn more" with a filled style
 
+               
+                InfoBox(
+                  isOK: false,
+                  title: 'Soil Quality',
+                  status: 'ISSUES!',
+                  max: 6,
+                  spots: const [
+                    FlSpot(0, 4.8),
+                    FlSpot(1, 4.7),
+                    FlSpot(2, 4.5),
+                    FlSpot(3, 4.1),
+                    FlSpot(4, 3.8),
+                    FlSpot(5, 3.8),
+                    FlSpot(6, 3.2),
+                    FlSpot(7, 2.3),
+                    FlSpot(8, 2.3),
+                    FlSpot(9, 2.3),
+                    FlSpot(10, 2.1),
+                    FlSpot(11, 2.0),
+                  ],
+                ),
                 // add a listtile with a leading icon of a little ? and a title of "What does this mean?"
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -289,10 +279,6 @@ class _HomeState extends State<Home> {
                           'You should by new soil and replace the old soil. If not your plant will die in a terrible way. You can replace the soil by purchaising new soil pack from us.'),
                     ),
                   ),
-                ),
-                //sizedbox
-                const SizedBox(
-                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -318,42 +304,36 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
-                  child: Divider(),
+                //sizedbox
+                const SizedBox(
+                  height: 10,
                 ),
-                
-                Text(
-                  'Soil Moisture',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green),
+                const SizedBox(
+                  height: 8,
                 ),
-                Text(
-                  'NORMAL',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
+
+                InfoBox(
+                  max: 6,
+                  title: "Soil Moisture",
+                  status: "NORMAL",
+                  isOK: true,
+                  spots: const [
+                    FlSpot(0, 4.8),
+                    FlSpot(1, 4.7),
+                    FlSpot(2, 4.5),
+                    FlSpot(3, 4.1),
+                    FlSpot(4, 4.05),
+                    FlSpot(5, 4.0),
+                    FlSpot(6, 3.8),
+                    FlSpot(7, 3.6),
+                    FlSpot(8, 3.4),
+                    FlSpot(9, 3.0),
+                    FlSpot(10, 2.7),
+                    FlSpot(11, 2.0),
+                  ],
                 ),
-                SizedBox(
-                  height: 200,
-                  child: LineChartSample2(
-                    // generate spots in a way that the first number increases and the second is a random number
-                    showLabels: true,
-                    spots: const [
-                      FlSpot(0, 4.8),
-                      FlSpot(1, 4.7),
-                      FlSpot(2, 4.5),
-                      FlSpot(3, 4.1),
-                      FlSpot(4, 4.05),
-                      FlSpot(5, 4.0),
-                      FlSpot(6, 3.8),
-                      FlSpot(7, 3.6),
-                      FlSpot(8, 3.4),
-                      FlSpot(9, 3.0),
-                      FlSpot(10, 2.7),
-                      FlSpot(11, 2.0),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 32.0, right: 32.0, bottom: 32.0),
+Padding(
+                  padding: const EdgeInsets.only(left: 32.0, right: 32.0, bottom: 16.0),
                   child: SlideAction(
                     stretchThumb: true,
                     trackBuilder: (context, state) {
@@ -412,99 +392,129 @@ class _HomeState extends State<Home> {
                     },
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
-                  child: Divider(),
-                ),
-                Text(
-                  'Seed growth',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green),
-                ),
-                Text(
-                  'HEALTHY',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
-                ),
-                SizedBox(
-                  height: 200,
-                  child: LineChartSample2(
-                      // generate spots in a way that the first number increases and the second is a random number
-                      spots: [
-                        FlSpot(0, 2.1),
-                        FlSpot(2.6, 3),
-                        FlSpot(4.9, 3.2),
-                        FlSpot(6.8, 3.4),
-                        FlSpot(8, 3.7),
-                        FlSpot(9.5, 3.8),
-                        FlSpot(11, 3.8),
-                      ]),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.0),
-                  child: Divider(),
-                ),
-                Text(
-                  'Box Humidity',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green),
-                ),
-                Text(
-                  'NORMAL',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.green),
-                ),
-                SizedBox(
-                  height: 200,
-                  child: LineChartSample2(
-                    // generate spots in a way that the first number increases and the second is a random number
-                    showLabels: true,
-                    spots: List.generate(
-                      12,
-                      (index) {
-                        var rng = Random();
-                        double randomNumber = 3 + rng.nextDouble() * (5 - 3);
+                // sizedbox 8
 
-                        return FlSpot(
-                          index.toDouble(),
-                          // completly random number between 0 and 5 as double
-                          randomNumber,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.0),
-                  child: Divider(),
-                ),
-                Text(
-                  'Box Temperature',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(
-                  height: 200,
-                  child: LineChartSample2(
-                    labelPrefix: "°C",
-                    min: 0,
-                    textGenerator: (value) {
-                      return ["18°C", "20°C", "22°C", "24°C", "26°C", "28°C"][value.toInt()];
+                InfoBox(
+                  title: "Box Humidity",
+                  status: "NORMAL",
+                  isOK: true,
+                  max: 6,
+                  textGenerator: (value) {
+                    return ["48%", "50%", "52%", "54%", "56%", "58%", "60%"][value.toInt()];
+                  },
+                  // random generated spots
+                  spots: List.generate(
+                    12,
+                    (index) {
+                      var rng = Random();
+                      double randomNumber = 3 + rng.nextDouble() * (5 - 3);
+
+                      return FlSpot(
+                        index.toDouble(),
+                        // completly random number between 0 and 5 as double
+                        randomNumber,
+                      );
                     },
-                    max: 5,
-                    spots: const [
-                      FlSpot(0, 2.1),
-                      FlSpot(2.6, 3),
-                      FlSpot(4.9, 3.2),
-                      FlSpot(6.8, 2.4),
-                      FlSpot(8, 2.2),
-                      FlSpot(9.5, 2.3),
-                      FlSpot(11, 2.1),
-                    ],
                   ),
+                  labelPrefix: "%",
                 ),
-           
+                const SizedBox(
+                  height: 8,
+                ),
+                InfoBox(
+                  textGenerator: (value) {
+                    return ["18°C", "20°C", "22°C", "24°C", "26°C", "28°C"][value.toInt()];
+                  },
+                  max: 4,
+                  spots: const [
+                    FlSpot(0, 2.1),
+                    FlSpot(2.6, 3),
+                    FlSpot(4.9, 3.2),
+                    FlSpot(6.8, 2.4),
+                    FlSpot(8, 2.2),
+                    FlSpot(9.5, 2.3),
+                    FlSpot(11, 2.1),
+                  ],
+                  title: "Box Temperature",
+                )
               ],
             ),
           ),
         ),
         const ShopPage()
       ][navbarSelectedIndex],
+    );
+  }
+}
+
+class InfoBox extends StatefulWidget {
+  InfoBox({
+    super.key,
+    this.title = "Box Temperature",
+    this.status = "NORMAL",
+    this.isOK = true,
+    this.max = 4,
+    this.textGenerator,
+    this.spots = const [
+      FlSpot(0, 2.1),
+      FlSpot(2.6, 3),
+      FlSpot(4.9, 3.2),
+      FlSpot(6.8, 3.4),
+      FlSpot(8, 3.7),
+      FlSpot(9.5, 3.8),
+      FlSpot(11, 3.8),
+    ],
+    this.labelPrefix = "°C",
+  });
+  String title;
+  String status;
+  bool isOK;
+  // spots
+  List<FlSpot> spots;
+
+  int max;
+  // textgenerator function
+  Function(double)? textGenerator;
+  // prefix
+  String labelPrefix;
+  @override
+  State<InfoBox> createState() => _InfoBoxState();
+}
+
+class _InfoBoxState extends State<InfoBox> {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: Column(
+            children: [
+              Text(
+                widget.title,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: widget.isOK ? Colors.green : Colors.red),
+              ),
+              Text(
+                widget.status,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: widget.isOK ? Colors.green : Colors.red),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 200,
+          width: MediaQuery.of(context).size.width - 70,
+          child: Center(
+            child: LineChartSample2(
+                labelPrefix: widget.labelPrefix,
+                max: widget.max.toDouble(),
+                textGenerator: widget.textGenerator,
+                spots: widget.spots,
+                gradient: widget.isOK ? [Colors.lightGreen, Colors.green] : [Colors.orange, Colors.red]
+            ),
+          ),
+        ),
+      ]),
     );
   }
 }
