@@ -248,7 +248,14 @@ class _HomeState extends State<Home> {
                   height: 10,
                 ),
 
-               
+                // SizedBox(
+                //   width: MediaQuery.of(context).size.width,
+                //   height: 200,
+                //   child: Text(
+                //     "HELLO",
+                //     textAlign: TextAlign.start,
+                //   ),
+                // ),
                 InfoBox(
                   isOK: false,
                   title: 'Soil Quality',
@@ -273,7 +280,7 @@ class _HomeState extends State<Home> {
                 ),
                 // add a listtile with a leading icon of a little ? and a title of "What does this mean?"
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Card(
                     child: ListTile(
                       leading: Icon(Icons.help_outline),
@@ -283,7 +290,7 @@ class _HomeState extends State<Home> {
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Row(
-                          // mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
                               onPressed: () {
@@ -317,18 +324,13 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 3,
-                ),
-
+          
                 
                 //sizedbox
                 const SizedBox(
-                  height: 16,
+                  height: 16 + 8,
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+    
 
                 InfoBox(
                   max: 6,
@@ -351,7 +353,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
 Padding(
-                  padding: const EdgeInsets.only(left: 32.0, right: 32.0, bottom: 16.0),
+                  padding: const EdgeInsets.only(left: 11.0, right: 11.0, bottom: 16.0 + 8),
                   child: SlideAction(
                     stretchThumb: true,
                     trackBuilder: (context, state) {
@@ -516,37 +518,39 @@ class InfoBox extends StatefulWidget {
 class _InfoBoxState extends State<InfoBox> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: Column(
-            children: [
-              Text(
-                widget.title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: widget.isOK ? Colors.green : Colors.red),
-              ),
-              Text(
-                widget.status,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: widget.isOK ? Colors.green : Colors.red),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 200,
-          width: MediaQuery.of(context).size.width - 70,
-          child: Center(
-            child: LineChartSample2(
-                labelPrefix: widget.labelPrefix,
-                max: widget.max.toDouble(),
-                textGenerator: widget.textGenerator,
-                spots: widget.spots,
-                gradient: widget.isOK ? [Colors.lightGreen, Colors.green] : [Colors.orange, Colors.red]
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Card(
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Column(
+              children: [
+                Text(
+                  widget.title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: widget.isOK ? Colors.green : Colors.red),
+                ),
+                Text(
+                  widget.status,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: widget.isOK ? Colors.green : Colors.red),
+                ),
+              ],
             ),
           ),
-        ),
-      ]),
+          SizedBox(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: LineChartSample2(
+                  labelPrefix: widget.labelPrefix,
+                  max: widget.max.toDouble(),
+                  textGenerator: widget.textGenerator,
+                  spots: widget.spots,
+                  gradient: widget.isOK ? [Colors.lightGreen, Colors.green] : [Colors.orange, Colors.red]),
+            ),
+          ),
+        ]),
+      ),
     );
   }
 }
