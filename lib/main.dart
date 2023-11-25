@@ -142,7 +142,7 @@ class ShopItem extends StatelessWidget {
 class _HomeState extends State<Home> {
   bool isLoadingWater = false;
 
-  var navbarSelectedIndex = 1;
+  var navbarSelectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -268,45 +268,63 @@ class _HomeState extends State<Home> {
                     FlSpot(10, 2.1),
                     FlSpot(11, 2.0),
                   ],
+                  labelPrefix: "%",
+                
                 ),
                 // add a listtile with a leading icon of a little ? and a title of "What does this mean?"
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32.0),
                   child: Card(
-                    child: const ListTile(
+                    child: ListTile(
                       leading: Icon(Icons.help_outline),
+                      
                       title: Text(
-                          'You should by new soil and replace the old soil. If not your plant will die in a terrible way. You can replace the soil by purchaising new soil pack from us.'),
+                          'When the soil is exhausted, the plant will not be able to grow. You should replace the soil before its nutrition value reaches complete zero.'),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                // Put your action here
+                              },
+                              // stronger background
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                              ),
+                              child: const Text('Learn in guides'),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  navbarSelectedIndex = 1;
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red, // This is the background color
+                                onPrimary: Colors.white, // This is the color of the text
+                              ),
+                              child: const Text('Head to shop'),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // Put your action here
-                      },
-                      child: const Text('Learn more in our guides'),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          navbarSelectedIndex = 1;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red, // This is the background color
-                        onPrimary: Colors.white, // This is the color of the text
-                      ),
-                      child: const Text('Head to shop'),
-                    ),
-                  ],
+                const SizedBox(
+                  height: 3,
                 ),
+
+                
                 //sizedbox
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
                 const SizedBox(
                   height: 8,
@@ -418,9 +436,22 @@ Padding(
                   ),
                   labelPrefix: "%",
                 ),
-                const SizedBox(
-                  height: 8,
+                InfoBox(
+                  labelPrefix: "%",
+                  max: 6,
+                  status: "HEALTHY",
+                  spots: const [
+                    FlSpot(0, 2.1),
+                    FlSpot(2.6, 3),
+                    FlSpot(4.9, 3.3),
+                    FlSpot(6.8, 3.4),
+                    FlSpot(8, 3.6),
+                    FlSpot(9.5, 3.6),
+                    FlSpot(11, 3.9),
+                  ],
+                  title: "Seed Growth",
                 ),
+               
                 InfoBox(
                   textGenerator: (value) {
                     return ["18°C", "20°C", "22°C", "24°C", "26°C", "28°C"][value.toInt()];
@@ -436,7 +467,8 @@ Padding(
                     FlSpot(11, 2.1),
                   ],
                   title: "Box Temperature",
-                )
+                ),
+         
               ],
             ),
           ),
