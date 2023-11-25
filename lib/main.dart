@@ -7,6 +7,11 @@ import 'package:slide_action/slide_action.dart';
 // import cuperino activity indicator
 import 'package:flutter/cupertino.dart';
 import 'dart:math';
+import 'dart:convert';
+import 'dart:io';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as status;
+import 'package:web_socket_channel/io.dart';
 
 void main() {
   runApp(const MyApp());
@@ -134,6 +139,95 @@ class ShopItem extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+
+
+class LiveSoil extends StatefulWidget {
+  const LiveSoil({super.key});
+
+  @override
+  State<LiveSoil> createState() => _LiveSoilState();
+}
+
+class _LiveSoilState extends State<LiveSoil> {
+  int maxDataPoints = 12;
+  List<double> dataPoints = [1000, 2000, 3000, 4000, 5000, 6000, 5000, 4000, 3000, 2000, 2500, 3400];
+  @override
+  void initState() {
+    super.initState();
+    connectToServer();
+  }
+
+  void connectToServer() async {
+    print("connecting");
+
+    WebSocketChannel channel;
+    // Connect to the server
+    channel = IOWebSocketChannel.connect(Uri.parse('ws://192.168.0.66:8080'));
+    print("connecting");
+
+    channel.stream.listen((message) {
+      channel.sink.add('received!');
+      // print(message);
+
+      addDatapoint(message);
+    });
+  }
+
+  double map(double x, double inMin, double inMax, double outMin, double outMax) {
+    return ((x - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+  }
+
+  void addDatapoint(String data) {
+    setState(() {
+      double datad = double.parse(data);
+      dataPoints.add(datad);
+      //remvoe the first item
+      if (dataPoints.length > maxDataPoints) {
+        dataPoints.removeAt(0);
+      }
+      // print(dataPoints);
+      // print(dataPoints.length);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // const [
+    //     FlSpot(0, 4.8),
+    //     FlSpot(1, 4.7),
+    //     FlSpot(2, 4.5),
+    //     FlSpot(3, 4.1),
+    //     FlSpot(4, 4.05),
+    //     FlSpot(5, 4.0),
+    //     FlSpot(6, 3.8),
+    //     FlSpot(7, 3.6),
+    //     FlSpot(8, 3.4),
+    //     FlSpot(9, 3.0),
+    //     FlSpot(10, 2.7),
+    //     FlSpot(11, 2.0),
+    //   ],
+
+    List<FlSpot> pointMap = [];
+    for (var i = 0; i < dataPoints.length; i++) {
+      pointMap.add(FlSpot(
+        i.toDouble(),
+        100 - map(dataPoints[i], 1000, 8000, 0, 100),
+      ));
+    }
+    return InfoBox(
+      maxHeight: 400,
+      max: 100,
+      title: "Soil Moisture",
+      status: "NORMAL",
+      isOK: true,
+      showLabels: false,
+      labelPrefix: "%",
+      textGenerator: (p0) => "",
+      spots: pointMap,
     );
   }
 }
@@ -276,7 +370,6 @@ class _HomeState extends State<Home> {
                     FlSpot(11, 2.0),
                   ],
                   labelPrefix: "%",
-                
                 ),
                 // add a listtile with a leading icon of a little ? and a title of "What does this mean?"
                 Padding(
@@ -284,7 +377,6 @@ class _HomeState extends State<Home> {
                   child: Card(
                     child: ListTile(
                       leading: Icon(Icons.help_outline),
-                      
                       title: Text(
                           'When the soil is exhausted, the plant will not be able to grow. You should replace the soil before its nutrition value reaches complete zero.'),
                       subtitle: Padding(
@@ -316,7 +408,7 @@ class _HomeState extends State<Home> {
                                 primary: Colors.red, // This is the background color
                                 onPrimary: Colors.white, // This is the color of the text
                               ),
-                              child: const Text('Head to shop'),
+                              child: const Text('Open shop'),
                             ),
                           ],
                         ),
@@ -324,36 +416,15 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-          
-                
+
                 //sizedbox
                 const SizedBox(
                   height: 16 + 8,
                 ),
-    
 
-                InfoBox(
-                  max: 6,
-                  title: "Soil Moisture",
-                  status: "NORMAL",
-                  isOK: true,
-                  labelPrefix: "%",
-                  spots: const [
-                    FlSpot(0, 4.8),
-                    FlSpot(1, 4.7),
-                    FlSpot(2, 4.5),
-                    FlSpot(3, 4.1),
-                    FlSpot(4, 4.05),
-                    FlSpot(5, 4.0),
-                    FlSpot(6, 3.8),
-                    FlSpot(7, 3.6),
-                    FlSpot(8, 3.4),
-                    FlSpot(9, 3.0),
-                    FlSpot(10, 2.7),
-                    FlSpot(11, 2.0),
-                  ],
-                ),
-Padding(
+                LiveSoil(),
+
+                Padding(
                   padding: const EdgeInsets.only(left: 11.0, right: 11.0, bottom: 16.0 + 8),
                   child: SlideAction(
                     stretchThumb: true,
@@ -454,7 +525,7 @@ Padding(
                   ],
                   title: "Seed Growth",
                 ),
-               
+
                 InfoBox(
                   textGenerator: (value) {
                     return ["18°C", "20°C", "22°C", "24°C", "26°C", "28°C"][value.toInt()];
@@ -471,7 +542,6 @@ Padding(
                   ],
                   title: "Box Temperature",
                 ),
-         
               ],
             ),
           ),
@@ -489,7 +559,9 @@ class InfoBox extends StatefulWidget {
     this.status = "NORMAL",
     this.isOK = true,
     this.max = 4,
+    this.showLabels = true,
     this.textGenerator,
+    this.maxHeight = 200,
     this.spots = const [
       FlSpot(0, 2.1),
       FlSpot(2.6, 3),
@@ -502,9 +574,12 @@ class InfoBox extends StatefulWidget {
     this.labelPrefix = "°C",
   });
   String title;
+  bool showLabels;
   String status;
   bool isOK;
   // spots
+
+  double maxHeight;
   List<FlSpot> spots;
 
   int max;
@@ -539,10 +614,13 @@ class _InfoBoxState extends State<InfoBox> {
             ),
           ),
           SizedBox(
-            height: 200,
+            height: widget.maxHeight,
             width: MediaQuery.of(context).size.width,
             child: Center(
               child: LineChartSample2(
+                  showLabels: widget.showLabels,
+                  // hideLabels: widget.hideLabels,
+                  maxHeight: widget.maxHeight,
                   labelPrefix: widget.labelPrefix,
                   max: widget.max.toDouble(),
                   textGenerator: widget.textGenerator,
@@ -565,6 +643,7 @@ class LineChartSample2 extends StatefulWidget {
       required this.spots,
       this.labelPrefix = "%",
       this.min = 0,
+      this.maxHeight = 200,
       this.max = 6,
       this.textGenerator,
       this.gradient = const [Colors.lightGreen, Colors.green]})
@@ -574,6 +653,8 @@ class LineChartSample2 extends StatefulWidget {
   double min = 0;
   double max = 6;
 
+  bool hideLabels = false;
+  double maxHeight = 200;
   String labelPrefix = "%";
   List<FlSpot> spots;
   bool showLabels = true;
@@ -657,7 +738,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
   LineChartData mainData() {
     return LineChartData(
       gridData: FlGridData(
-        show: true,
+        show: widget.showLabels,
         drawVerticalLine: true,
         horizontalInterval: 1,
         verticalInterval: 1,
@@ -701,7 +782,10 @@ class _LineChartSample2State extends State<LineChartSample2> {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+
+        border: widget.showLabels
+            ? Border.all(color: const Color(0xff37434d))
+            : Border.fromBorderSide(BorderSide(color: Color(0xff37434d), style: BorderStyle.none)),
       ),
       minX: 0,
       maxX: 11,
